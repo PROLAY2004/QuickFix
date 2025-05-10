@@ -1,0 +1,144 @@
+{% extends 'Accounts/base.html' %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'CSS/Accounts/settings.css' %}">
+{% endblock %}
+
+{% block header %}
+<h2>Account Settings</h2>
+{% endblock %}
+
+{% block main %}
+<section class="settings-section">
+    <div class="settings-container">
+        
+        <!-- Privacy Settings -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <i class="fas fa-lock"></i>
+                <h3>Privacy & Data</h3>
+            </div>
+            <div class="settings-content">
+                <div class="privacy-options">
+                    <div class="privacy-item">
+                        <div class="privacy-label">
+                            <h4>Data Collection</h4>
+                            <p>We collect data to improve our services. Your data may be used for business analysis and service improvements.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-label">
+                            <h4>Third-Party Sharing</h4>
+                            <p>We may share anonymized data with trusted partners for service optimization.</p>
+                        </div>
+     
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-label">
+                            <h4>Personalized Ads</h4>
+                            <p>Allow us to show you relevant offers based on your activity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Support -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <i class="fas fa-headset"></i>
+                <h3>Customer Support</h3>
+            </div>
+            <div class="settings-content">
+                <div class="support-options">
+                    <a href="#" class="support-item">
+                        <i class="fas fa-question-circle"></i>
+                        <div class="support-details">
+                            <h4>Help Center</h4>
+                            <p>Find answers to common questions</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="#" class="support-item">
+                        <i class="fas fa-comment-alt"></i>
+                        <div class="support-details">
+                            <h4>Support Ticket</h4>
+                            <p>Talk to our support team to solve any problem</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="#" class="support-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="support-details">
+                            <h4>Call Support</h4>
+                            <p>+91 (800) 123-4567 (9AM-5PM EST)</p>
+                        </div>
+                        
+                    </a>
+                    
+                    <a href="#" class="support-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="support-details">
+                            <h4>Email Us</h4>
+                            <p>support@servicecompany.com</p>
+                        </div>
+                        <!-- <i class="fas fa-chevron-right"></i> -->
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Account Actions -->
+        <div class="settings-card danger-zone">
+            <div class="settings-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Account Actions</h3>
+            </div>
+            <div class="settings-content">
+                    <div class="delete-account">
+                        <h4>Delete Account Permanently</h4>
+                        <p>Warning: This will remove all your data from our servers. Some anonymized data may be retained for business purposes as outlined in our privacy policy.</p>
+                        <button class="delete-btn" id="deleteAccountBtn">
+                            <i class="fas fa-trash-alt"></i>
+                            Delete My Account
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal" id="deleteModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Account Deletion</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="warning-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>This action cannot be undone. All your personal data will be removed from our active systems, though anonymized data may be retained for business analysis as per our data retention policy.</p>
+            </div>
+            <div class="confirmation-check">
+                <input type="checkbox" id="confirmDelete">
+                <label for="confirmDelete">I understand that this action is permanent and irreversible</label>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn">Cancel</button>
+                <button class="confirm-delete-btn" disabled>Delete Account Permanently</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="{% static 'JS/settings.js' %}"></script>
+{% endblock %}

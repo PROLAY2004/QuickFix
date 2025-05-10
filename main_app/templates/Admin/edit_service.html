@@ -1,0 +1,138 @@
+{% extends 'Admin/base_admin.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Admin/services.css' %}">
+{% endblock %}
+{% block title %}Edit Service{% endblock %}
+{% block page_title %}Edit Service{% endblock %}
+
+{% block content %}
+<section class="edit-service-section">
+    <div class="edit-service-container">
+        <div class="back-link">
+            <a href="/Admin/Custom/Services/{{id}}/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Services
+            </a>
+        </div>
+        <div class="msg" id="msg" style="color:red;margin-bottom: 3%;">{{msg}}</div>
+        <div class="edit-service-card">
+            <div class="card-header">
+                <h3>Edit Service Details</h3>
+                <p>Update the information for this service</p>
+            </div>
+            
+            <form class="service-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service-name">Service Name</label>
+                        <input type="text" id="service-name" name="service_name" value="{{ service.Name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-category">Category</label>
+                        <select id="service-category" name="service_category" required>
+                            <option value="Home Services" {% if service.Category == "Home Services" %}selected{% endif %}>Home Services</option>
+                            <option value="Professional Services" {% if service.Category == "Professional Services" %}selected{% endif %}>Professional Services</option>
+                            <option value="Personal Care" {% if service.Category == "Personal Care" %}selected{% endif %}>Personal Care</option>
+                            <option value="Other" {% if service.Category == "Other" %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="service-description">Description</label>
+                    <textarea id="service-description" name="service_description" rows="3" required>{{ service.Description }}</textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service-image">Image URL</label>
+                        <input type="url" id="service-image" name="service_image" value="{{ service.Image_URL }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="service-price">Added By</label>
+                        <input type="text" name="admin_name" value="{{admin_name}}" required readonly>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="reset" class="reset-btn">Reset Changes</button>
+                    <button type="submit" class="submit-btn">Update Service</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="service-preview">
+            <div class="card-header">
+                <h3>Service Preview</h3>
+            </div>
+            <div class="preview-card">
+                <div class="service-image">
+                    {% if service.Image_URL %}
+                    <img src="{{ service.Image_URL }}" alt="{{ servic.Name }}" id="preview-image">
+                    {% else %}
+                    <div class="image-placeholder">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="service-details">
+                    <h4 id="preview-name">{{ service.Name }}</h4>
+                    <span class="service-category" id="preview-category">{{ service.Category }}</span>
+                    <p class="service-description" id="preview-description">{{ service.Description }}</p>
+                    <div class="service-meta">
+                        <span><i class="fas fa-user"></i> <span id="preview-price">{{ service.Added_by }}</span></span>
+                        <span><i class="fas fa-clock"></i> <span id="preview-duration">{{ service.Time }}</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+</section>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script>
+    // Live preview functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all form inputs
+        const inputs = document.querySelectorAll('.service-form input, .service-form select, .service-form textarea');
+        
+        // Add event listeners to all inputs
+        inputs.forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+        
+        // Initial update
+        updatePreview();
+    });
+    
+    function updatePreview() {
+        // Update preview elements with current form values
+        document.getElementById('preview-name').textContent = document.getElementById('service-name').value;
+        document.getElementById('preview-category').textContent = document.getElementById('service-category').value;
+        document.getElementById('preview-description').textContent = document.getElementById('service-description').value;
+        document.getElementById('preview-price').textContent = document.getElementById('service-price').value;
+        document.getElementById('preview-duration').textContent = document.getElementById('service-duration').value;
+        
+        // Update image if URL changes
+        const imageUrl = document.getElementById('service-image').value;
+        const previewImage = document.getElementById('preview-image');
+        if (imageUrl && previewImage) {
+            previewImage.src = imageUrl;
+        }
+    }
+</script>
+<script>
+    function removeElementAfterTime(elementId, duration) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            setTimeout(() => {
+                element.style.display = "none";
+            }, duration);
+        }
+    }
+    removeElementAfterTime('msg', 4000);
+</script>
+{% endblock %}

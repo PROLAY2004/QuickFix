@@ -1,0 +1,179 @@
+{% extends 'Admin/base_admin.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Admin/services.css' %}">
+{% endblock %}
+{% block title %}Manage Services{% endblock %}
+{% block page_title %}Services Management{% endblock %}
+
+{% block content %}
+<section class="services-section">
+    <div class="services-container">
+        <!-- Add New Service Form -->
+        <div class="msg" id="msg" style="color:red;font-size: 20px;">{{msg}}</div>
+        <div class="add-service-card">
+            <div class="card-header">
+                <h3>Register New Service</h3>
+                <p>Fill in the details to add a new service</p>
+            </div>
+            <form class="service-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service-name">Service Name</label>
+                        <input type="text" id="service-name" name="service_name"
+                            placeholder="e.g. Construction, Carpenter" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-category">Category</label>
+                        <select id="service-category" name="service_category" required>
+                            <option value="" disabled selected>Select category</option>
+                            <option value="Home Services">Home Services</option>
+                            <option value="Professional Services">Professional Services</option>
+                            <option value="Personal Care">Personal Care</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-description">Description</label>
+                    <textarea id="service-description" name="service_description" rows="3"
+                        placeholder="Brief description of the service" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service-image">Image URL</label>
+                        <input type="url" id="service-image" name="service_image" placeholder="Paste URL here">
+                    </div>
+                    <div class="form-group">
+                        <label for="service-price">Added By</label>
+                        <input type="text" name="admin_name" value="{{admin_name}}" required readonly>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="reset" class="reset-btn">Clear</button>
+                    <button type="submit" class="submit-btn">Register Service</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Services List -->
+        <div class="services-list">
+            <div class="list-header">
+                <h3>Registered Services</h3>
+                <p>Manage your service offerings</p>
+            </div>
+
+            {% if services %}
+            <div class="service-grid">
+                {% for service in services %}
+                <div class="service-card">
+                    <div class="service-image">
+                        {% if service.Image_URL %}
+                        <img src="{{ service.Image_URL }}" alt="{{ service.Name }}">
+                        {% else %}
+                        <div class="image-placeholder">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="service-details">
+                        <div class="grp" style="display: flex;justify-content: space-between;">
+                            <h4>{{ service.Name }}</h4>
+                            {% if service.Status == "Active" %}
+                            <span class="service-category">PUBLISHED</span>
+                            {% endif %}
+                        </div>
+                        <p class="service-description">{{ service.Description|truncatechars:100 }}</p>
+                        <div class="service-meta">
+                            <span><i class="fas fa-user"></i> {{ service.Added_by }}</span>
+                            <span><i class="fas fa-clock"></i> {{ service.Time }}</span>
+                        </div>
+                    </div>
+                    <div class="service-actions">
+                        <a href="/Admin/Custom/Services/Edit/{{id}}/{{service.id}}/" class="edit-btn">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="delete-btn"
+                            onclick="showDeleteModal('{{ id }}', '{{ service.id }}', '{{ service.Name }}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        {% if service.Status == "Inactive" %}
+                        <a href="/Admin/Custom/Services/Publish/{{id}}/{{service.id}}/" class="live-btn">
+                            <i class="fas fa-share"></i> Publish
+                        </a>
+                        {% else %}
+                        <a href="/Admin/Custom/Services/Publish/{{id}}/{{service.id}}/" class="live-btn" style="color: orangered;">
+                            <i class="fas fa-eraser"></i>Remove
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-services">
+                <i class="fas fa-concierge-bell"></i>
+                <p>No services registered yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Confirm Deletion</h3>
+        <p>Are you sure you want to delete "<span id="serviceToDelete"></span>"?</p>
+        <p>This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+            <form id="deleteForm" style="display: inline;">
+                <button type="submit" class="confirm-delete-btn">Delete Service</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script>
+    // Delete modal functions
+    function showDeleteModal(userid, serviceId, serviceName) {
+        document.getElementById('serviceToDelete').textContent = serviceName;
+        document.getElementById('deleteForm').action = `/Admin/Custom/Services/Delete/${userid}/${serviceId}/`;
+        document.getElementById('deleteModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function (event) {
+        const modal = document.getElementById('deleteModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+<!-- Message disappear js code -->
+<script>
+    function removeElementAfterTime(elementId, duration) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            setTimeout(() => {
+                element.style.display = "none";
+            }, duration);
+        }
+    }
+    removeElementAfterTime('msg', 4000);
+</script>
+
+{% endblock %}

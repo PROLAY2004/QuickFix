@@ -1,0 +1,242 @@
+{% extends 'Admin/base_admin.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Admin/admin_dashboard.css' %}">
+{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="dashboard-cards">
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Total Appointments</h3>
+            <div class="card-icon appointments">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+        </div>
+        <div class="card-value">1,248</div>
+        <div class="card-footer">
+            <i class="fas fa-arrow-up text-success"></i>
+            <span>12% from last month</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Active Products</h3>
+            <div class="card-icon products">
+                <i class="fas fa-box-open"></i>
+            </div>
+        </div>
+        <div class="card-value">86</div>
+        <div class="card-footer">
+            <i class="fas fa-arrow-up text-success"></i>
+            <span>5 new this week</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Pending Orders</h3>
+            <div class="card-icon orders">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+        </div>
+        <div class="card-value">42</div>
+        <div class="card-footer">
+            <i class="fas fa-arrow-down text-danger"></i>
+            <span>3% from last week</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Active Offers</h3>
+            <div class="card-icon offers">
+                <i class="fas fa-tags"></i>
+            </div>
+        </div>
+        <div class="card-value">15</div>
+        <div class="card-footer">
+            <i class="fas fa-arrow-up text-success"></i>
+            <span>2 new today</span>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Active Services</h3>
+            <div class="card-icon appointments">
+                <i class="fas fa-wrench"></i>
+            </div>
+        </div>
+        <div class="card-value">1,248</div>
+        <div class="card-footer">
+            <i class="fas fa-arrow-up text-success"></i>
+            <span>12% from last month</span>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-container">
+    <div class="data-table-header">
+        <h3 class="data-table-title">Recent Appointments</h3>
+        <div class="data-table-actions">
+            <button class="table-action-btn secondary">
+                <i class="fas fa-filter"></i>
+                Filter
+            </button>
+            <button class="table-action-btn primary">
+                <i class="fas fa-plus"></i>
+                New Appointment
+            </button>
+        </div>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#AP-1001</td>
+                <td>John Smith</td>
+                <td>Plumbing</td>
+                <td>May 15, 2023 - 10:00 AM</td>
+                <td><span class="status-badge confirmed">Confirmed</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#AP-1002</td>
+                <td>Sarah Johnson</td>
+                <td>Electrical</td>
+                <td>May 16, 2023 - 2:00 PM</td>
+                <td><span class="status-badge pending">Pending</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#AP-1003</td>
+                <td>Michael Brown</td>
+                <td>AC Repair</td>
+                <td>May 17, 2023 - 11:00 AM</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#AP-1004</td>
+                <td>Emily Davis</td>
+                <td>Home Cleaning</td>
+                <td>May 18, 2023 - 9:00 AM</td>
+                <td><span class="status-badge canceled">Canceled</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="data-table-container">
+    <div class="data-table-header">
+        <h3 class="data-table-title">Recent Orders</h3>
+        <div class="data-table-actions">
+            <button class="table-action-btn secondary">
+                <i class="fas fa-filter"></i>
+                Filter
+            </button>
+        </div>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#ORD-5001</td>
+                <td>Robert Wilson</td>
+                <td>$245.00</td>
+                <td>May 14, 2023</td>
+                <td><span class="status-badge confirmed">Shipped</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#ORD-5002</td>
+                <td>Jennifer Lee</td>
+                <td>$189.50</td>
+                <td>May 15, 2023</td>
+                <td><span class="status-badge pending">Processing</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#ORD-5003</td>
+                <td>David Miller</td>
+                <td>$320.75</td>
+                <td>May 16, 2023</td>
+                <td><span class="status-badge completed">Delivered</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>#ORD-5004</td>
+                <td>Lisa Thompson</td>
+                <td>$95.25</td>
+                <td>May 17, 2023</td>
+                <td><span class="status-badge canceled">Canceled</span></td>
+                <td>
+                    <button class="action-btn view">
+                        <i class="fas fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

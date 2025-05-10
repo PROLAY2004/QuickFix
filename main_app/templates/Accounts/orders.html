@@ -1,0 +1,550 @@
+{% extends 'Accounts/base.html' %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'CSS/Accounts/orders.css' %}">
+{% endblock %}
+
+{% block header %}
+<h2>Your Order History</h2>
+{% endblock %}
+
+{% block main %}
+<section class="order-section">
+    <div class="order-header">
+        <div class="header-content">
+            <h1><i class="fas fa-clipboard-list"></i> Order Dashboard</h1>
+            <p>Track, manage, and review your purchases</p>
+        </div>
+        <div class="order-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{total_orders}}</h3>
+                    <p>Total Orders</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{delivered_orders}}</h3>
+                    <p>Delivered</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{pending_orders}}</h3>
+                    <p>Processing</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-filters">
+        <div class="filter-group">
+            <label for="status-filter"><i class="fas fa-filter"></i> Filter by:</label>
+            <select id="status-filter" class="filter-select">
+                <option value="all">All Orders</option>
+                <option value="delivered">Delivered</option>
+                <option value="processing">Processing</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="time-filter"><i class="fas fa-calendar-alt"></i> Time period:</label>
+            <select id="time-filter" class="filter-select">
+                <option value="all-time">All Time</option>
+                <option value="last-month">Last 30 Days</option>
+                <option value="last-3months">Last 3 Months</option>
+                <option value="last-year">Last Year</option>
+            </select>
+        </div>
+        <div class="search-group">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search orders..." class="search-input">
+        </div>
+    </div>
+
+    <div class="orders-container">
+        {% if orders %}
+        {% for order in orders %}
+        <div class="order-card" data-status="{{order.status|lower}}">
+            <div class="order-card-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #{{order.order_id}}</span>
+                    <span class="order-date">{{order.order_date}}</span>
+                </div>
+                <div class="order-status {{order.status|lower}}">
+                    <span>{{order.status}}</span>
+                    {% if order.status == 'Delivered' %}
+                    <i class="fas fa-check-circle"></i>
+                    {% elif order.status == 'Processing' %}
+                    <i class="fas fa-sync-alt"></i>
+                    {% elif order.status == 'Cancelled' %}
+                    <i class="fas fa-times-circle"></i>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="order-card-body">
+                <div class="order-products">
+                    {% for item in order.items %}
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="{{item.image}}" alt="{{item.name}}">
+                            <span class="product-quantity">{{item.quantity}}</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>{{item.name}}</h4>
+                            <p class="product-variant">{{item.variant}}</p>
+                            <div class="product-price">
+                                <span>${{item.price}}</span>
+                                {% if item.original_price %}
+                                <span class="original-price">${{item.original_price}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>${{order.subtotal}}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>${{order.shipping}}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span class="discount">-${{order.discount}}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>${{order.total}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-card-footer">
+                <div class="delivery-info">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <p>Estimated delivery</p>
+                        <h5>{{order.estimated_delivery}}</h5>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <button class="action-btn track-order">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Track Order
+                    </button>
+                    <button class="action-btn view-details">
+                        <i class="fas fa-file-invoice"></i>
+                        View Details
+                    </button>
+                    {% if order.status == 'Processing' %}
+                    <button class="action-btn cancel-order">
+                        <i class="fas fa-times"></i>
+                        Cancel Order
+                    </button>
+                    {% endif %}
+                    {% if order.status == 'Delivered' %}
+                    <button class="action-btn reorder">
+                        <i class="fas fa-redo"></i>
+                        Reorder
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="no-orders">
+            <div class="no-orders-content">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>No Orders Yet</h3>
+                <p>You haven't placed any orders with us yet. Start shopping to see your order history here.</p>
+                <a href="/Home/" class="shop-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    Start Shopping
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="pagination-container">
+        <div class="pagination">
+            <button class="page-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <span class="page-dots">...</span>
+            <button class="page-btn">8</button>
+            <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<!-- <section class="order-section">
+    <div class="order-header">
+        <div class="header-content">
+            <h1><i class="fas fa-clipboard-list"></i> Order Dashboard</h1>
+            <p>Track, manage, and review your purchases</p>
+        </div>
+        <div class="order-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>3</h3>
+                    <p>Total Orders</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>1</h3>
+                    <p>Delivered</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>1</h3>
+                    <p>Processing</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-filters">
+        <div class="filter-group">
+            <label for="status-filter"><i class="fas fa-filter"></i> Filter by:</label>
+            <select id="status-filter" class="filter-select">
+                <option value="all">All Orders</option>
+                <option value="delivered">Delivered</option>
+                <option value="processing">Processing</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="time-filter"><i class="fas fa-calendar-alt"></i> Time period:</label>
+            <select id="time-filter" class="filter-select">
+                <option value="all-time">All Time</option>
+                <option value="last-month">Last 30 Days</option>
+                <option value="last-3months">Last 3 Months</option>
+                <option value="last-year">Last Year</option>
+            </select>
+        </div>
+        <div class="search-group">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search orders..." class="search-input">
+        </div>
+    </div>
+
+    <div class="orders-container">
+        <div class="order-card" data-status="delivered">
+            <div class="order-card-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #ORD-78945</span>
+                    <span class="order-date">Delivered on May 15, 2023</span>
+                </div>
+                <div class="order-status delivered">
+                    <span>Delivered</span>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+            
+            <div class="order-card-body">
+                <div class="order-products">
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/71WkDp--uqL._AC_UL480_FMwebp_QL65_.jpg" alt="Wireless Headphones">
+                            <span class="product-quantity">1</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>Premium Wireless Headphones</h4>
+                            <p class="product-variant">Color: Black, Noise Cancelling</p>
+                            <div class="product-price">
+                                <span>$199.99</span>
+                                <span class="original-price">$249.99</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/61L1ItFgFHL._AC_UL480_FMwebp_QL65_.jpg" alt="Phone Case">
+                            <span class="product-quantity">2</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>Shockproof Phone Case</h4>
+                            <p class="product-variant">Color: Transparent, For iPhone 14</p>
+                            <div class="product-price">
+                                <span>$29.98</span>
+                                <span class="original-price">$39.98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$229.97</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span class="discount">-$50.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>$179.97</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-card-footer">
+                <div class="delivery-info">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <p>Delivered on</p>
+                        <h5>May 15, 2023</h5>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <button class="action-btn track-order">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Track Order
+                    </button>
+                    <button class="action-btn view-details">
+                        <i class="fas fa-file-invoice"></i>
+                        View Details
+                    </button>
+                    <button class="action-btn reorder">
+                        <i class="fas fa-redo"></i>
+                        Reorder
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-card" data-status="processing">
+            <div class="order-card-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #ORD-89123</span>
+                    <span class="order-date">Placed on June 5, 2023</span>
+                </div>
+                <div class="order-status processing">
+                    <span>Processing</span>
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
+            
+            <div class="order-card-body">
+                <div class="order-products">
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/71Wwn7QODsL._AC_UL480_FMwebp_QL65_.jpg" alt="Smart Watch">
+                            <span class="product-quantity">1</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>Smart Fitness Watch</h4>
+                            <p class="product-variant">Color: Midnight Blue, GPS</p>
+                            <div class="product-price">
+                                <span>$159.99</span>
+                                <span class="original-price">$199.99</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$159.99</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>$5.99</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span class="discount">-$40.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>$125.98</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-card-footer">
+                <div class="delivery-info">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <p>Estimated delivery</p>
+                        <h5>June 12, 2023</h5>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <button class="action-btn track-order">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Track Order
+                    </button>
+                    <button class="action-btn view-details">
+                        <i class="fas fa-file-invoice"></i>
+                        View Details
+                    </button>
+                    <button class="action-btn cancel-order">
+                        <i class="fas fa-times"></i>
+                        Cancel Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-card" data-status="cancelled">
+            <div class="order-card-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #ORD-45612</span>
+                    <span class="order-date">Cancelled on April 28, 2023</span>
+                </div>
+                <div class="order-status cancelled">
+                    <span>Cancelled</span>
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+            
+            <div class="order-card-body">
+                <div class="order-products">
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UL480_FMwebp_QL65_.jpg" alt="Bluetooth Speaker">
+                            <span class="product-quantity">1</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>Portable Bluetooth Speaker</h4>
+                            <p class="product-variant">Color: Red, Waterproof</p>
+                            <div class="product-price">
+                                <span>$79.99</span>
+                                <span class="original-price">$99.99</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/61SUj2a2IEL._AC_UL480_FMwebp_QL65_.jpg" alt="USB Cable">
+                            <span class="product-quantity">3</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>Braided USB-C Cables</h4>
+                            <p class="product-variant">Length: 6ft, 3-Pack</p>
+                            <div class="product-price">
+                                <span>$24.99</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$104.98</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Discount</span>
+                        <span class="discount">-$20.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>$84.98</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-card-footer">
+                <div class="delivery-info">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <p>Cancelled on</p>
+                        <h5>April 28, 2023</h5>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <button class="action-btn view-details">
+                        <i class="fas fa-file-invoice"></i>
+                        View Details
+                    </button>
+                    <button class="action-btn reorder">
+                        <i class="fas fa-redo"></i>
+                        Reorder
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pagination-container">
+        <div class="pagination">
+            <button class="page-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <span class="page-dots">...</span>
+            <button class="page-btn">8</button>
+            <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section> -->
+
+
+
+
+
+
+
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+
+<script src="{% static 'JS/orders.js' %}"></script>
+{% endblock %}

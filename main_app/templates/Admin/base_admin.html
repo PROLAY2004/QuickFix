@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/Admin/admin_base.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/Admin/drive_chatbot.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    {% if request.path == "/Admin/Custom/"|add:id|add:"/" %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a href="/Admin/Custom/{{id}}/">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    {% if '/Admin/Custom/Profile/' in request.path %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a href="/Admin/Custom/Profile/{{id}}/">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Admin Profile</span>
+                        </a>
+                    </li>
+                    {% if '/Admin/Custom/Appointments/' in request.path %}
+                    <li class="nav-item active">
+                    {% else %}
+                    <li class="nav-item">
+                    {% endif %}
+                        <a href="/Admin/Custom/Appointments/{{id}}/">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Appointments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_tab == 'products' %}active{% endif %}">
+                        <a href="">
+                            <i class="fas fa-box-open"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    {% if '/Admin/Custom/Services/' in request.path %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a href="/Admin/Custom/Services/{{id}}/">
+                            <i class="fas fa-wrench"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_tab == 'offers' %}active{% endif %}">
+                        <a href="">
+                            <i class="fas fa-tags"></i>
+                            <span>Offers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_tab == 'orders' %}active{% endif %}">
+                        <a href="">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_tab == 'activity' %}active{% endif %}">
+                        <a href="">
+                            <i class="fas fa-history"></i>
+                            <span>Activity Log</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="admin-sidebar-footer">
+                <a href="/Home/" class="logout-btn" style="color:aliceblue">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Go Back</span>
+                </a>
+                <a href="/Auth/Logout/" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>{% block page_title %}{% endblock %}</h1>
+                </div>
+                <div class="header-right">
+                    <div class="admin-profile">
+                        {% if Image %}
+                        <img src="/MEDIA_FILES/{{Image}}" alt="Admin Avatar">
+                        {% else %}
+                        <img src="https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg"
+                            alt="Admin Avatar">
+                        {% endif %}
+                    </div>
+
+                    {% if "Admin/Custom/Services/" in request.path %}
+                    <button class="drive-converter-btn" title="Drive Link Converter">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    {% endif %}
+
+                </div>
+            </header>
+
+            <div class="admin-content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h4>Drive Link Converter</h4>
+            <button class="close-chatbot">&times;</button>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-messages">
+                <div class="chatbot-message bot">
+                    <p>Paste your Google Drive link and I'll convert it to a direct download link!</p>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="drive-link" placeholder="Paste Google Drive link here...">
+            <button id="convert-btn">Convert</button>
+        </div>
+    </div>
+    {% if "Admin/Custom/Services/" in request.path %}
+    <script src="{% static 'JS/drive_chatbot.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+</body>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.querySelector('.admin-sidebar');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+
+        // Toggle sidebar on button click
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function (event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggleBtn = event.target === toggleBtn || toggleBtn.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnToggleBtn && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+</script>
+</html>

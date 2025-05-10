@@ -1,0 +1,635 @@
+:root {
+    --admin-primary: #4a6b8a;
+    --admin-primary-dark: #3a56d4;
+    --admin-secondary: #4cc9f0;
+    --admin-accent: #7209b7;
+    --admin-text: #f8f9fa;
+    --admin-light-text: #adb5bd;
+    --admin-bg: #f8f9fa;
+    --admin-card-bg: #ffffff;
+    --admin-border: #e0e0e0;
+    --admin-success: #2ecc71;
+    --admin-warning: #e74c3c;
+    --admin-disabled: #666;
+    --admin-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --admin-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --admin-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+    --admin-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --past-time-color: rgba(231, 76, 60, 0.1);
+}
+
+
+/* Add to time-slot styles */
+
+
+*{
+    box-sizing: border-box;
+}
+/* Admin Appointment Styles */
+.admin-appointment-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.admin-sidebar-footer,
+.admin-brand {
+    border-color: #444;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-card, .calendar-section {
+    background: var(--admin-card-bg);
+    border-radius: 12px;
+    box-shadow: var(--admin-shadow-sm);
+    border: 1px solid var(--admin-border);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.settings-header h3 {
+    font-size: 1.5rem;
+    color: var(--admin-primary);
+    font-weight: 600;
+}
+
+.settings-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: var(--admin-transition);
+    background-color: var(--admin-bg);
+}
+
+.form-control:focus {
+    border-color: var(--admin-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 107, 138, 0.1);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--admin-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--admin-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--admin-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+.btn-danger {
+    background: var(--admin-warning);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+.btn-success {
+    background: var(--admin-success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+
+/* Calendar Section */
+.calendar-section {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.current-week-range {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    flex-grow: 1;
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.nav-arrow:hover {
+    background: rgba(67, 97, 238, 0.1);
+    transform: scale(1.1);
+}
+
+.nav-arrow:disabled {
+    color: var(--disabled-color);
+    cursor: not-allowed;
+    background: none;
+    transform: none;
+}
+
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.day-header {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.day-header.today {
+    background: rgba(67, 97, 238, 0.1);
+    border: 1px solid var(--primary-color);
+}
+
+.day-name {
+    font-size: 0.85rem;
+    color: var(--light-text);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.day-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.time-slots-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.day-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.time-slot {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    margin-top: 3%;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    background: rgba(233, 236, 239, 0.5);
+    color: var(--text-color);
+    border: 1px solid transparent;
+}
+
+.time-slot:hover {
+    background: rgba(67, 97, 238, 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.time-slot.selected {
+    background: var(--admin-primary);
+    color: white;
+    border-color: var(--primary-dark);
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
+}
+
+.time-slot.booked {
+    background: rgba(233, 236, 239, 0.3);
+    color: var(--disabled-color);
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.time-slot.past {
+    background: rgba(233, 236, 239, 0.3);
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Selected Slot Display */
+.selected-slot-display {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(67, 97, 238, 0.05);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.selected-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.selected-info i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.selected-label {
+    font-size: 0.85rem;
+    color: var(--light-text);
+    margin-bottom: 0.25rem;
+}
+
+.selected-time {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.selected-time.empty {
+    color: var(--light-text);
+    font-style: italic;
+    font-weight: normal;
+}
+
+.confirm-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.9rem 1.75rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    box-shadow: 0 2px 10px rgba(67, 97, 238, 0.3);
+}
+
+.confirm-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+}
+
+.confirm-btn:disabled {
+    background: var(--disabled-color);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.confirm-btn i {
+    font-size: 1rem;
+}
+
+/* Appointments List */
+.appointments-list {
+    margin-top: 2rem;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--admin-card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--admin-shadow-sm);
+}
+
+.appointments-table th {
+    background: var(--admin-primary);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+}
+
+.appointments-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--admin-border);
+    vertical-align: middle;
+}
+
+.appointments-table tr:last-child td {
+    border-bottom: none;
+}
+
+.appointments-table tr:hover {
+    background: rgba(74, 107, 138, 0.03);
+}
+
+.status-badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-badge.confirmed {
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--admin-success);
+}
+
+.status-badge.pending {
+    background: rgba(241, 196, 15, 0.1);
+    color: #f39c12;
+}
+
+.status-badge.cancelled {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--admin-warning);
+}
+
+.status-badge.completed {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--admin-primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: var(--admin-transition);
+    font-size: 1rem;
+}
+
+.action-btn:hover {
+    background: rgba(74, 107, 138, 0.1);
+}
+
+.action-btn.danger {
+    color: var(--admin-warning);
+}
+
+.action-btn.danger:hover {
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--admin-shadow-lg);
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.time-slot.past-time {
+    background: var(--past-time-color);
+    color: var(--disabled-color);
+    cursor: not-allowed;
+}
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--admin-primary);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--admin-light-text);
+    transition: var(--admin-transition);
+}
+
+.modal-close:hover {
+    color: var(--admin-primary);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .time-slots-container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .week-days {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .day-header:nth-child(n+6),
+    .day-slots:nth-child(n+6) {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .time-slots-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .week-days {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .day-header:nth-child(n+5), 
+    .day-slots:nth-child(n+5) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 1.75rem;
+    }
+    
+    .time-slots-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .week-days {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .day-header:nth-child(n+4), 
+    .day-slots:nth-child(n+4) {
+        display: none;
+    }
+    
+    .selected-slot-display {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .booking-section {
+        padding: 0 1rem;
+    }
+    
+    .booking-header, 
+    .service-selection,
+    .calendar-section,
+    .selected-slot-display,
+    .contact-info,
+    .booking-footer {
+        padding: 1.5rem;
+    }
+    
+    .time-slots-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .week-days {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .day-header:nth-child(n+3), 
+    .day-slots:nth-child(n+3) {
+        display: none;
+    }
+    
+    .booking-footer {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+    
+    .back-btn,
+    .submit-booking {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .time-slots-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .week-days {
+        grid-template-columns: 1fr;
+    }
+    
+    .day-header:nth-child(n+2), 
+    .day-slots:nth-child(n+2) {
+        display: none;
+    }
+}

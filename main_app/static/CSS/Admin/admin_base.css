@@ -1,0 +1,335 @@
+/* Admin Base Styles - Updated */
+:root {
+    --admin-primary: #4a6b8a;
+    --admin-primary-dark: #3a56d4;
+    --admin-secondary: #4cc9f0;
+    --admin-accent: #7209b7;
+    --admin-text: #f8f9fa;
+    --admin-light-text: #adb5bd;
+    --admin-bg: #f8f9fa;
+    --admin-card-bg: #ffffff;
+    --admin-border: #444;
+    --admin-success: #2ecc71;
+    --admin-warning: #e74c3c;
+    --admin-disabled: #666;
+    --admin-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --admin-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --admin-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+    --admin-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+/* Base Layout */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--admin-bg);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Dark Sidebar Styles */
+.admin-sidebar {
+    width: 280px;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    color: var(--admin-text);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    /* Increased z-index */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--admin-border);
+    transition: transform 0.3s ease;
+    /* Added transition */
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: #121212;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: none;
+    /* Hidden by default */
+    z-index: 1001;
+    /* Above sidebar */
+    position: relative;
+}
+
+/* Remove scrollbar but keep functionality */
+.admin-sidebar::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.admin-brand {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    z-index: 1;
+}
+
+.admin-brand i {
+    font-size: 1.75rem;
+    color: var(--admin-secondary);
+}
+
+.admin-brand h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Navigation Styles */
+.admin-nav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.admin-nav ul {
+    list-style: none;
+    /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin: 0.25rem 1rem;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: var(--admin-text);
+    text-decoration: none;
+    transition: var(--admin-transition);
+}
+
+.nav-item a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Special Dashboard Button Effect */
+.nav-item.active a {
+    background: linear-gradient(90deg, rgba(76, 201, 240, 0.2) 0%, rgba(76, 201, 240, 0.1) 100%);
+    color: var(--admin-secondary);
+    font-weight: 600;
+    border-left: 3px solid var(--admin-secondary);
+}
+
+.nav-item i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Sidebar Footer */
+.admin-sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--admin-border);
+    position: sticky;
+    bottom: 0;
+    background-color: #333;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: var(--admin-warning);
+    text-decoration: none;
+    transition: var(--admin-transition);
+}
+
+.logout-btn:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Main Content Area */
+.admin-main {
+    flex: 1;
+    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-y: auto;
+    /* Enable scrolling for main content */
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--admin-card-bg);
+    border-bottom: 1px solid var(--admin-border);
+    box-shadow: var(--admin-shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dash-text);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.admin-notifications {
+    position: relative;
+    cursor: pointer;
+    color: var(--dash-text);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--admin-warning);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.admin-profile img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-profile span {
+    font-weight: 500;
+    color: var(--dash-text);
+}
+
+.admin-content {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: var(--admin-bg);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .admin-sidebar {
+        transform: translateX(-120%);
+        /* Hide sidebar by default */
+    }
+
+    .admin-sidebar.active {
+        transform: translateX(0);
+        /* Show sidebar when active */
+    }
+
+    .sidebar-toggle {
+        display: block;
+        /* Show hamburger button */
+        margin-right: 1rem;
+    }
+
+    .admin-main {
+        margin-left: 0 !important;
+        /* Remove margin when sidebar is hidden */
+    }
+
+    /* Overlay when sidebar is open */
+    .admin-sidebar.active+.admin-main::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .admin-profile span {
+        display: none;
+    }
+
+    .admin-content {
+        padding: 1rem;
+    }
+}
+
+/* Drive Converter Button Styles */
+.drive-converter-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    background: #4285F4;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.drive-converter-btn:hover {
+    background: var(--admin-primary-dark);
+    transform: scale(1.1);
+}
+
+.drive-converter-btn i {
+    font-size: 1rem;
+}
+
+chatbot-container:not(.active) {
+    pointer-events: none;
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>QuickFix - Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'CSS/home.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .hero {
+            background: url("https://www.kotak.com/content/dam/Kotak/article-images/shopping-for-new-year-why-use-your-credit-card-d.jpg") no-repeat right center/cover;
+        }
+    </style>
+    <link rel="icon" href="{% static 'Images/Logo.png' %}" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Header -->
+    <!-- <marquee behavior="" direction="left">* Offers For New Users *</marquee> -->
+    <header>
+        <div class="logo">QuickFix24</div>
+        <div class="user-actions formob">
+            {% if not Admin %}
+            <a href="{{link}}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            {% if Admin %}
+            {% if superAdmin %}
+            <a href="{{link}}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            <a href="/Admin/Custom/{{id}}/"><i class="fas fa-user-cog"></i></a>
+            {% endif %}
+            <a href="/Cart"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+        <nav id="nav">
+            <ul>
+                <li><a href="/" style="color: rgb(241, 176, 35);font-weight: 700;">Home</a></li>
+                <li><a href="#Products">Products</a></li>
+                <li><a href="#Services">Services</a></li>
+                <li><a href="#">About</a></li>
+                <!-- <li><a href="#">Contact</a></li> -->
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search products..." id="search-input">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="user-actions forpc">
+            {% if not Admin %}
+            <a href="{{link}}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            {% if Admin %}
+            {% if superAdmin %}
+            <a href="{{link}}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            <a href="/Admin/Custom/{{id}}/"><i class="fas fa-user-cog"></i></a>
+            {% endif %}
+            <a href="/Cart"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+        </div>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to QuickFix24</h1>
+            <p>Book top-rated services at the best prices and enjoy a seamless experience.</p>
+            <a href="#" class="btn">Book Slot</a>
+        </div>
+    </section>
+
+
+
+    <!-- Our Services -->
+    <section class="featured-services" id="Services">
+        <h2>Our Services</h2>
+        <div class="service-grid">
+            {% for service in services %}
+            {% if service.Status == "Active" %}
+            <div class="service-card">
+                <img src="{{service.Image_URL}}" alt="{{service.Name}}">
+                <h3>{{service.Name}}</h3>
+                <button>Know More</button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+
+    <!-- slider -->
+    <div class="slider-container">
+        <button class="prev-btn">&#10094;</button>
+        <div class="slider">
+            <div class="slide"><img src="{% static 'Images/offer1.png' %}" alt="Offer 1"></div>
+            <div class="slide"><img src="{% static 'Images/offer3.png' %}" alt="Offer 3"></div>
+            <div class="slide"><img src="{% static 'Images/offer4.png' %}" alt="Offer 4"></div>
+            <div class="slide"><img src="{% static 'Images/offer5.png' %}" alt="Offer 5"></div>
+        </div>
+        <button class="next-btn">&#10095;</button>
+    </div>
+
+
+    <!-- Featured Products -->
+    <section class="featured-products" id="Products">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKXLIlZfnjtYvK49bEV1Q3vnjHlSfAck64GL9bMMLmuCia-FqiZ14n21F-nOVyD6VhSso&usqp=CAU"
+                    alt="Cement">
+                <h3>Cement</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://img1.exportersindia.com/product_images/bc-full/2023/9/10636601/construction-sand-1683102907-6878024.jpeg"
+                    alt="Sand">
+                <h3>Sand</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://4.imimg.com/data4/FI/SM/IMOB-41589443/22829601_698732786987244_9108158046707123231_o-500x500.jpg"
+                    alt="Stone">
+                <h3>Stone</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://5.imimg.com/data5/GLADMIN/Default/2022/7/OM/XO/AA/92368/iron-rods-250x250.jpg"
+                    alt="Iron Rods">
+                <h3>Iron Rods</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+
+            <div class="product-card">
+                <img src="https://content.jdmagicbox.com/comp/etawah/p5/9999p5688.5688.211122152636.v8p5/catalogue/-ea8h35m79p-250.jpg"
+                    alt="Doors">
+                <h3>Wooden Doors</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://www.demolitiontraders.co.nz/edit/image_cache/3796_960x960c1pcenter.jpg" alt="Window">
+                <h3>Wooden Window</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/96a676204976651.Y3JvcCwxNDAwLDEwOTUsMCwzODE.jpg"
+                    alt="Paint">
+                <h3>Paint</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://5.imimg.com/data5/LJ/NH/MY-174857/painter-putty-500x500.jpg" alt="Putty">
+                <h3>Wall Putty</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScjll5jEl5MUmaDiqLOaXlgMrYY-wiFHuQyHjrH27WuyPR26DnONh2n3C3X4q3V0mVGko&usqp=CAU"
+                    alt="Jewellery">
+                <h3>Jewellery</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="https://5.imimg.com/data5/ANDROID/Default/2021/6/MP/US/XZ/8826974/product-jpeg.jpg"
+                    alt="Mobile Covers">
+                <h3>Mobile Covers</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="{% static 'Images/electronics.jpg' %}" alt="Electronics">
+                <h3>Electronics</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+            <div class="product-card">
+                <img src="{% static 'Images/Medical.jpg' %}" alt="Medical Need">
+                <h3>Medical Need</h3>
+                <!-- <p>500₹</p> -->
+                <button>View All</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Categories Section -->
+    <!-- <section class="categories">
+        <h2>Shop by Category</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr6j7YmygB04A64C76irUuNagnuWK7IFek9A&s" alt="Products">
+                <h3>Products</h3>
+            </div>
+            <div class="category-card">
+                <img src="https://static-00.iconduck.com/assets.00/interface-validation-check-square-2-icon-1024x1024-y5oznexk.png" alt="Services">
+                <h3>Services</h3>
+            </div>
+            <div class="category-card">
+                <img src="https://static.vecteezy.com/system/resources/previews/046/261/799/non_2x/fast-delivery-banner-speech-bubble-with-fast-delivery-text-business-concept-3d-illustration-spiral-background-line-icon-for-business-and-advertising-vector.jpg" alt="Delivery">
+                <h3>Delivery</h3>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>QuickFix24</h3>
+                <p>Your one-stop shop for all your needs.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="email" name="contact_mail" placeholder="Your Email...">
+                    <textarea name="contact_details" id="" placeholder="Your Message..."></textarea>
+                    <button>Send</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 QuickFix24. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'JS/home.js' %}"></script>
+</body>
+
+</html>
